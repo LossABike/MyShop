@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/product.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen(
     this.product, {
     super.key,
@@ -11,10 +11,15 @@ class ProductDetailScreen extends StatelessWidget {
   final Product product;
 
   @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar:AppBar(
-        title :Text(product.title),
+        title :Text(widget.product.title),
 
       ),
       body : SingleChildScrollView(
@@ -24,13 +29,13 @@ class ProductDetailScreen extends StatelessWidget {
               height: 300,
               width: double.infinity,
               child: Image.network(
-                product.imageUrl,
+                widget.product.imageUrl,
                 fit: BoxFit.cover,
               ),
             ),
             const SizedBox(height: 10),
             Text(
-              '\$${product.price}',
+              '\$${widget.product.price}',
               style: const TextStyle(
                 color: Colors.grey,
                 fontSize: 20,
@@ -43,7 +48,7 @@ class ProductDetailScreen extends StatelessWidget {
               padding :const EdgeInsets.symmetric(horizontal:10),
               width: double.infinity,
               child: Text(
-                product.description,
+                widget.product.description,
                 textAlign: TextAlign.center,
                 softWrap: true,
               ),

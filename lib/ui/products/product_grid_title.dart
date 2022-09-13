@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../models/product.dart';
 import 'product_detail_screen.dart';
 
-class ProductGridTile extends StatelessWidget {
+class ProductGridTile extends StatefulWidget {
   const ProductGridTile(
     this.product, {
     super.key,
@@ -10,6 +10,11 @@ class ProductGridTile extends StatelessWidget {
 
   final Product product;
 
+  @override
+  State<ProductGridTile> createState() => _ProductGridTileState();
+}
+
+class _ProductGridTileState extends State<ProductGridTile> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -20,12 +25,12 @@ class ProductGridTile extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (ctx) => ProductDetailScreen(product),
+                builder: (ctx) => ProductDetailScreen(widget.product),
               ),
             );
           },
           child: Image.network(
-            product.imageUrl,
+            widget.product.imageUrl,
             fit: BoxFit.cover,
           ),
         ),
@@ -38,7 +43,7 @@ class ProductGridTile extends StatelessWidget {
       backgroundColor: Colors.black87,
       leading: IconButton(
         icon: Icon(
-          product.isFavorite ? Icons.favorite : Icons.favorite_border,
+          widget.product.isFavorite ? Icons.favorite : Icons.favorite_border,
         ),
         color: Theme.of(context).colorScheme.secondary,
         onPressed: () {
@@ -46,7 +51,7 @@ class ProductGridTile extends StatelessWidget {
         },
       ),
       title: Text(
-        product.title,
+        widget.product.title,
         textAlign: TextAlign.center,
       ),
       trailing: IconButton(
