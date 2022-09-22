@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/product.dart';
 import 'product_detail_screen.dart';
+import '../shared/app_drawer.dart';
 
 class ProductGridTile extends StatefulWidget {
   const ProductGridTile(
@@ -23,10 +24,9 @@ class _ProductGridTileState extends State<ProductGridTile> {
         footer: buildGridFooterBar(context),
         child: GestureDetector(
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (ctx) => ProductDetailScreen(widget.product),
-              ),
+            Navigator.of(context).pushNamed(
+              ProductDetailScreen.routeName,
+              arguments: widget.product.id,
             );
           },
           child: Image.network(

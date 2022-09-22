@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import '../shared/app_drawer.dart';
 import 'user_product_list_tile.dart';
 import 'products_manager.dart';
 
 class UserProductsScreen extends StatefulWidget {
+  static const routeName = '/user-products';
   const UserProductsScreen({super.key});
 
   @override
@@ -20,6 +22,7 @@ class _UserProductsScreenState extends State<UserProductsScreen> {
           buildAddButton(),
         ],
       ),
+      drawer: const AppDrawer(),
       body: RefreshIndicator(
         onRefresh: () async => print('Refresh products'),
         child: buildUserProductListView(productsManager),
@@ -29,9 +32,9 @@ class _UserProductsScreenState extends State<UserProductsScreen> {
 
   Widget buildUserProductListView(ProductsManager productsManager) {
     return ListView.builder(
-      itemCount:productsManager.itemCount,
-      itemBuilder: (ctx,i) => Column (
-        children:[
+      itemCount: productsManager.itemCount,
+      itemBuilder: (ctx, i) => Column(
+        children: [
           UserProductListTile(
             productsManager.items[i],
           ),
@@ -41,12 +44,11 @@ class _UserProductsScreenState extends State<UserProductsScreen> {
     );
   }
 
-  Widget buildAddButton(){
+  Widget buildAddButton() {
     return IconButton(
-      icon : const Icon(Icons.add),
-      onPressed: (){
+      icon: const Icon(Icons.add),
+      onPressed: () {
         print('go to edit product screen');
-
       },
     );
   }
