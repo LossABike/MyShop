@@ -33,7 +33,7 @@ ValueNotifier<bool> get isFavoriteListenable{
     String? description,
     double? price,
     String? imageUrl,
-    bool? isFavorite,
+    ValueNotifier<bool>? isFavorite,
   }) {
     return Product(
       id: id ?? this.id,
@@ -41,7 +41,7 @@ ValueNotifier<bool> get isFavoriteListenable{
       description: description ?? this.description,
       price: price ?? this.price,
       imageUrl: imageUrl ?? this.imageUrl,
-      isFavorite: isFavorite ?? _isFavorite,
+      isFavorite: isFavorite ?? _isFavorite.value,
     );
   }
 }

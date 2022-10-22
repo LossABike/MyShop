@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 // import 'ui/products/product_detail_screen.dart';
 // import 'ui/products/products_manager.dart';
 // import 'ui/products/products_overview_screen.dart';
@@ -18,23 +19,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers : [
+      providers: [
         ChangeNotifierProvider(
           create: (ctx) => ProductsManager(),
         ),
         ChangeNotifierProvider(
           create: (ctx) => CartManager(),
         ),
-        ChangeNotifierProvider(
-          create: (ctx) => CartManager()
-        ),
-        ChangeNotifierProvider(
-          create: (ctx) => OrdersManager()
-        ),
-
+        ChangeNotifierProvider(create: (ctx) => CartManager()),
+        ChangeNotifierProvider(create: (ctx) => OrdersManager()),
       ],
-    
-    child: MaterialApp(
+      child: MaterialApp(
         title: 'My Shop',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -56,13 +51,24 @@ class MyApp extends StatelessWidget {
             final productId = settings.arguments as String;
             return MaterialPageRoute(builder: (ctx) {
               return ProductDetailScreen(
-                ctx.read<ProductsManager>().findById(productId),
-              );
+                  ctx.read<ProductsManager>().findById(productId));
             });
+          }
+          if (settings.name == EditProductScreen.routeName) {
+            final productId = settings.arguments as String?;
+            return MaterialPageRoute(
+              builder: (ctx) {
+                return EditProductScreen(
+                  productId != null
+                      ? ctx.read<ProductsManager>().findById(productId)
+                      : null,
+                );
+              },
+            );
           }
           return null;
         },
-     ),
+      ),
     );
   }
 }

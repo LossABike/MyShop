@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../shared/app_drawer.dart';
+import 'edit_product_screen.dart';
 import 'user_product_list_tile.dart';
 import 'products_manager.dart';
 
@@ -20,7 +21,7 @@ class _UserProductsScreenState extends State<UserProductsScreen> {
       appBar: AppBar(
         title: const Text('Yout Products'),
         actions: <Widget>[
-          buildAddButton(),
+          buildAddButton(context),
         ],
       ),
       drawer: const AppDrawer(),
@@ -44,7 +45,7 @@ class _UserProductsScreenState extends State<UserProductsScreen> {
   //     ),
   //   );
   // }
- 
+
   Widget buildUserProductListView(ProductsManager productsManager) {
     return Consumer<ProductsManager>(
       builder: (ctx, productsManager, child) {
@@ -63,11 +64,13 @@ class _UserProductsScreenState extends State<UserProductsScreen> {
     );
   }
 
-  Widget buildAddButton() {
+  Widget buildAddButton(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.add),
       onPressed: () {
-        print('go to edit product screen');
+        Navigator.of(context).pushNamed(
+          EditProductScreen.routeName,
+        );
       },
     );
   }
