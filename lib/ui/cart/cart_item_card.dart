@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../models/cart_item.dart';
 import '../shared/dialog_utils.dart';
+import 'cart_manager.dart';
 
 class CartItemCard extends StatelessWidget {
   final String productId;
@@ -39,33 +41,34 @@ class CartItemCard extends StatelessWidget {
         );
       },
       onDismissed: (direction) {
-        print('Cart item dismissed');
+        context.read<CartManager>().removeItem(productId);
       },
       child: buildItemCard(),
     );
   }
+
   Widget buildItemCard() {
-        return Card(
-           margin: const EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 4,
-           ),
-           child: Padding(
-            padding : const EdgeInsets.all(8),
-            child: ListTile(
-              leading:CircleAvatar(
-                child:Padding(
-                  padding :  const EdgeInsets.all(5),
-                  child: FittedBox(
-                    child:Text('\$${cardItem.price}'),
-                  ),
-                ),
+    return Card(
+      margin: const EdgeInsets.symmetric(
+        horizontal: 15,
+        vertical: 4,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: ListTile(
+          leading: CircleAvatar(
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: FittedBox(
+                child: Text('\$${cardItem.price}'),
               ),
-              title: Text(cardItem.title),
-              subtitle: Text('Total : \$${(cardItem.price * cardItem.quantity)}'),
-              trailing : Text ('${cardItem.quantity} x'),
             ),
-           ),
-        );
+          ),
+          title: Text(cardItem.title),
+          subtitle: Text('Total : \$${(cardItem.price * cardItem.quantity)}'),
+          trailing: Text('${cardItem.quantity} x'),
+        ),
+      ),
+    );
   }
 }
