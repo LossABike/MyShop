@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myshop/ui/products/products_manager.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/product.dart';
 
@@ -38,7 +40,7 @@ class _UserProductListTileState extends State<UserProductListTile> {
     return IconButton(
       icon: const Icon(Icons.edit),
       onPressed: () {
-        print('GO to edit product screen');
+        print('Go to edit product screen');
       },
       color: Theme.of(context).primaryColor,
     );
@@ -47,8 +49,18 @@ class _UserProductListTileState extends State<UserProductListTile> {
   Widget buildDeleteButton(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.delete),
-      onPressed: () async {
-        print('delete a product');
+      onPressed: () {
+        context.read<ProductsManager>().deleteProduct(widget.product.id!);
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Product deleted',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
       },
       color: Theme.of(context).errorColor,
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'ui/products/product_detail_screen.dart';
 // import 'ui/products/products_manager.dart';
 // import 'ui/products/products_overview_screen.dart';
@@ -16,7 +17,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiProvider(
+      providers : [
+        ChangeNotifierProvider(
+          create: (ctx) => ProductsManager(),
+        ),
+      ],
+    
+    child: MaterialApp(
         title: 'My Shop',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -38,12 +46,13 @@ class MyApp extends StatelessWidget {
             final productId = settings.arguments as String;
             return MaterialPageRoute(builder: (ctx) {
               return ProductDetailScreen(
-                ProductsManager().findById(productId),
+                ctx.read<ProductsManager>().findById(productId),
               );
             });
           }
           return null;
         },
+     ),
     );
   }
 }
