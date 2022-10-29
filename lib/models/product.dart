@@ -17,15 +17,17 @@ class Product {
     isFavorite = false,
   }) : _isFavorite = ValueNotifier(isFavorite);
 
-set isFavorite (bool newValue){
-  _isFavorite.value = newValue;
-}
-bool get isFavorite {
-  return _isFavorite.value;
-}
-ValueNotifier<bool> get isFavoriteListenable{
+  set isFavorite(bool newValue) {
+    _isFavorite.value = newValue;
+  }
+
+  bool get isFavorite {
+    return _isFavorite.value;
+  }
+
+  ValueNotifier<bool> get isFavoriteListenable {
     return _isFavorite;
-}
+  }
 
   Product copyWith({
     String? id,
@@ -33,7 +35,7 @@ ValueNotifier<bool> get isFavoriteListenable{
     String? description,
     double? price,
     String? imageUrl,
-    ValueNotifier<bool>? isFavorite,
+    bool? isFavorite,
   }) {
     return Product(
       id: id ?? this.id,
@@ -41,7 +43,26 @@ ValueNotifier<bool> get isFavoriteListenable{
       description: description ?? this.description,
       price: price ?? this.price,
       imageUrl: imageUrl ?? this.imageUrl,
-      isFavorite: isFavorite ?? _isFavorite.value,
+      isFavorite: isFavorite ?? this.isFavorite,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'price': price,
+      'imageUrl': imageUrl,
+    };
+  }
+
+  static Product fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'],
+      title: json['title'],
+      description: json['description'],
+      price: json['price'],
+      imageUrl: json['imageUrl'],
     );
   }
 }

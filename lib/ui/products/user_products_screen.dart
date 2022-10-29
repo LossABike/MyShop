@@ -5,31 +5,43 @@ import 'edit_product_screen.dart';
 import 'user_product_list_tile.dart';
 import 'products_manager.dart';
 
-class UserProductsScreen extends StatefulWidget {
+class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-products';
   const UserProductsScreen({super.key});
 
-  @override
-  State<UserProductsScreen> createState() => _UserProductsScreenState();
-}
+  Future<void> _refreshProducts(BuildContext context) async {
+    await context.read<ProductsManager>().fetchProducts(true);
+  }
 
-class _UserProductsScreenState extends State<UserProductsScreen> {
+//class _UserProductsScreenState extends State<UserProductsScreen> {
+
   @override
   Widget build(BuildContext context) {
     final productsManager = ProductsManager();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Yout Products'),
-        actions: <Widget>[
-          buildAddButton(context),
-        ],
-      ),
-      drawer: const AppDrawer(),
-      body: RefreshIndicator(
-        onRefresh: () async => print('Refresh products'),
-        child: buildUserProductListView(productsManager),
-      ),
-    );
+        appBar: AppBar(
+          title: const Text('Yout Products'),
+          actions: <Widget>[
+            buildAddButton(context),
+          ],
+        ),
+        drawer: const AppDrawer(),
+       
+        body: FutureBuilder(
+            future: _refreshProducts(context),
+            builder: (ctx, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return RefreshIndicator(
+                child: buildUserProductListView(productsManager),
+                onRefresh: () => _refreshProducts(context),
+              );
+            },
+          ),
+        );
   }
 
   // Widget buildUserProductListView(ProductsManager productsManager) {

@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../models/product.dart';
-import 'product_grid_title.dart';
+import 'product_grid_tile.dart';
 import 'products_manager.dart';
+import '../../models/product.dart';
+import 'package:provider/provider.dart';
 
-class ProductsGrid extends StatefulWidget {
+
+class ProductsGrid extends StatelessWidget {
   final bool showFavorites;
 
   const ProductsGrid(this.showFavorites, {super.key});
 
   @override
-  State<ProductsGrid> createState() => _ProductsGridState();
-}
-
-class _ProductsGridState extends State<ProductsGrid> {
-
-
-  @override
   Widget build(BuildContext context) {
+    // final productsManager = ProductsManager();
     final products = context.select<ProductsManager, List<Product>>(
-        (productsManager) => widget.showFavorites
-            ? productsManager.favoriteItems
-            : productsManager.items);
-
+      (productsManager) => showFavorites
+        ? productsManager.favoriteItems
+        : productsManager.items);
     return GridView.builder(
       padding: const EdgeInsets.all(10.0),
       itemCount: products.length,

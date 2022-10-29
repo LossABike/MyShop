@@ -27,9 +27,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => AuthManager(),
         ),
-        ChangeNotifierProvider(
-          create: (ctx) => ProductsManager(),
-        ),
+        ChangeNotifierProxyProvider<AuthManager,ProductsManager>(
+            create: (ctx) => ProductsManager(),
+            update: (ctx, authManager, productsManager) {
+              productsManager!.authToken = authManager.authToken;
+              return productsManager;
+            },
+          ),
         ChangeNotifierProvider(
           create: (ctx) => CartManager(),
         ),
@@ -39,8 +43,7 @@ class MyApp extends StatelessWidget {
       //(3) COnsume the AuthManager instance
       child: Consumer<AuthManager>(
         builder: (ctx, authManager, child) {
-          return
-          MaterialApp(
+          return MaterialApp(
             title: 'My Shop',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
@@ -51,15 +54,16 @@ class MyApp extends StatelessWidget {
                 secondary: Colors.deepOrange,
               ),
             ),
-            home: authManager.isAuth ? const ProductsOverviewScreen() 
-            :FutureBuilder(
-              future: authManager.tryAutoLogin(),
-              builder: (ctx,snapshot){
-                return snapshot.connectionState == ConnectionState.waiting
-                   ? const SplashScreen()
-                   : const AuthScreen();
-              },
-            ),
+            home: authManager.isAuth
+                ? const ProductsOverviewScreen()
+                : FutureBuilder(
+                    future: authManager.tryAutoLogin(),
+                    builder: (ctx, snapshot) {
+                      return snapshot.connectionState == ConnectionState.waiting
+                          ? const SplashScreen()
+                          : const AuthScreen();
+                    },
+                  ),
             routes: {
               CartScreen.routeName: (ctx) => const CartScreen(),
               OrdersScreen.routeName: (ctx) => const OrdersScreen(),
