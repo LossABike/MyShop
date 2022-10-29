@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 import 'package:http/http.dart' as http;
 import '../models/auth_token.dart';
 import '../models/product.dart';
@@ -34,10 +33,8 @@ class ProductsService extends FirebaseService {
             ? false
             : (userFavoritesMap[productId] ?? false);
 
-        products.add(Product.fromJson({
-          'id': productId,
-          ...product
-        }).copyWith(isFavorite: isFavorite));
+        products.add(Product.fromJson({'id': productId, ...product})
+            .copyWith(isFavorite: isFavorite));
       });
 
       return products;
@@ -73,7 +70,7 @@ class ProductsService extends FirebaseService {
     }
   }
 
-   Future<bool> updateProduct(Product product) async {
+  Future<bool> updateProduct(Product product) async {
     try {
       final url =
           Uri.parse('$databaseUrl/products/${product.id}.json?auth=$token');
@@ -94,8 +91,7 @@ class ProductsService extends FirebaseService {
 
   Future<bool> deleteProduct(String id) async {
     try {
-      final url =
-          Uri.parse('$databaseUrl/products/$id.json?auth=$token');
+      final url = Uri.parse('$databaseUrl/products/$id.json?auth=$token');
       final respone = await http.delete(url);
 
       if (respone.statusCode != 200) {
